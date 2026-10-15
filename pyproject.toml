@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "urducap"
+version = "2.0.0"
+description = "Image captioning in Urdu: a 2024 CNN-GRU baseline re-evaluated against SigLIP 2 + mBART-50 and a LoRA-tuned vision-language model"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Shelender Kumar" }]
+dependencies = [
+    "torch>=2.3",
+    "torchvision>=0.18",
+    "transformers>=4.57",
+    "peft>=0.13",
+    "sentencepiece",
+    "sacrebleu>=2.4",
+    "pycocoevalcap>=1.2",
+    "pandas>=2.0",
+    "openpyxl",
+    "pillow",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6", "scikit-learn", "nltk"]
+demo = ["gradio>=4.40"]
+
+[project.scripts]
+urducap = "urducap.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["urducap*"]
+
+[tool.ruff]
+line-length = 110
+extend-exclude = ["legacy", "notebooks"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]

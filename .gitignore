@@ -1,0 +1,9 @@
+urducap.egg-info/
+.venv/
+__pycache__/
+*.pyc
+runs/
+data/flickr30k_images/
+data/*.json
+!data/splits.json
+.pytest_cache/
