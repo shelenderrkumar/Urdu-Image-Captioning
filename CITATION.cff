@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "UrduCap: image captioning in Urdu"
+authors:
+  - family-names: Kumar
+    given-names: Shelender
+repository-code: "https://github.com/shelenderrkumar/Urdu-Image-Captioning"
+license: MIT
+type: software
