@@ -5,15 +5,15 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-ee4c2c)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-Urdu has more than 230 million speakers, but almost no image-captioning data. UrduCap
+Urdu has almost no image-captioning data. UrduCap
 builds an Urdu version of Flickr30k (31,783 images, 158,915 machine-translated captions)
 and compares three generations of captioning models on it, under one evaluation protocol:
 
 | Model | Idea | Trained parameters |
 |---|---|---|
-| **CNN + attention GRU** (2024 baseline) | ResNet-101 grid features, Bahdanau attention, word vocabulary learned from scratch | ~10 M |
-| **SigLIP 2 + mBART-50** | a modern image encoder joined to a decoder pre-trained to write Urdu, via cross-attention | ~200 M |
-| **Qwen3-VL-2B + LoRA** | an open vision-language model, zero-shot and with rank-16 adapters | ~17 M (adapters) |
+| **CNN + attention GRU** (2024 baseline) | ResNet-101 grid features, Bahdanau attention, word vocabulary learned from scratch | 10.45 M ([`scripts/count_params.py`](scripts/count_params.py)) |
+| **SigLIP 2 + mBART-50** | a modern image encoder joined to a decoder pre-trained to write Urdu, via cross-attention | pending (needs the pretrained weights) |
+| **Qwen3-VL-2B + LoRA** | an open vision-language model, zero-shot and with rank-16 adapters | pending (needs the pretrained weights) |
 
 ## Why version 2: the 2024 numbers did not hold up
 
@@ -24,14 +24,14 @@ That is higher than human captions score against each other. An audit
 
 | Problem | Effect | Fix in v2 |
 |---|---|---|
-| Train/validation split over *captions*, not images | 99.8% of scored images were also training images | image-level Karpathy split (29k / 1k / 1k) |
+| Train/validation split over *captions*, not images | 99.8% of scored images were also training images | image-level Karpathy split |
 | `sentence_bleu` given strings, so it counted **characters** | inflated BLEU about 4× (0.568 vs 0.136 for human captions) | corpus BLEU-4 on Urdu word tokens, plus chrF++ and CIDEr-D |
 | Random sampling at test time | a different score on every run | greedy or beam search |
 | Untranslated English captions kept as targets | noise in training and references | script detection drops them, and reports how many |
 
 ## Results
 
-Test split: the 1,000 Karpathy test images, 5 references each. Corpus-level metrics on
+Test split: the Karpathy test split, 5 references per image. Corpus-level metrics on
 normalised Urdu.
 
 | Model | BLEU-4 | chrF++ | CIDEr-D |
@@ -103,7 +103,7 @@ Tests run offline on a CPU, with tiny randomly initialised models: `pytest -q`.
 ```
 urducap/      package: text, data, metrics, models/{legacy,encdec,vlm}, train, cli
 tests/        25 offline tests (tiny models)
-scripts/      audit_2024_eval.py
+scripts/      audit_2024_eval.py, count_params.py
 notebooks/    run_experiments.ipynb, every GPU experiment end to end
 docs/         2024-evaluation-audit.md
 legacy/       the original 2024 TensorFlow notebooks and translation scripts
